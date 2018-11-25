@@ -1,10 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-  // Map each object in pokemon.js to its equivalent HTML card
-  // The H1 name of each pokemon links to its bulbapedia page
-  const pokemonCardHTMLArr = POKEMON.map(function(pokemonObj) {
-    return returnPokeHTML(pokemonObj)
-  })
+  // Map each object in pokemon.js to HTML generator helper function
+  const pokemonCardHTMLArr = POKEMON.map(pokemonObj => returnPokeHTML(pokemonObj))
 
   // Join the above array to create a long string of HTML for all pokemon cards
   const pokemonCardsHTML = pokemonCardHTMLArr.join('')
@@ -26,15 +23,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   })
 
-  // Use filter on input box to get list of pokemon
+  // Live search
   document.getElementById('pokemon-search-input').addEventListener('input', function(event) {
+    // filter for pokemon
     const filteredPokemonObjs = POKEMON.filter(pokemonObj => (
       pokemonObj.name.includes(event.target.value.toLowerCase())
     ))
+    // create html for filtered pokemon
     const filteredPokemonObjsHTML = filteredPokemonObjs.map(pokemonObj => (
       returnPokeHTML(pokemonObj)
     )).join('')
-    document.getElementById('pokemon-container').innerHTML = filteredPokemonObjsHTML
+    // render filtered pokemon
+    document.getElementById('pokemon-container').innerHTML = filteredPokemonObjsHTML.length ? filteredPokemonObjsHTML : `<p class='center-text'>There are no Pokemon here</p>`
   })
 
 })
@@ -60,15 +60,34 @@ function returnPokeHTML (pokemonObj) {
           <th>Abilities</th>
           <th>Type</th>
         </tr>
-        <tr>
-          <td><a href='https://bulbapedia.bulbagarden.net/wiki/${pokemonObj.abilities[0]}_(Ability)'>${pokemonObj.abilities[0]}</a></td>
-          <td><a href='https://bulbapedia.bulbagarden.net/wiki/${pokemonObj.types[0]}_(type)'>${pokemonObj.types[0]}</a></td>
-        </tr>
-        <tr>
-          <td><a href='https://bulbapedia.bulbagarden.net/wiki/${pokemonObj.abilities[1]}_(Ability)'>${pokemonObj.abilities[1]}</a></td>
-          <td><a href='https://bulbapedia.bulbagarden.net/wiki/${pokemonObj.types[1]}_(type)'>${pokemonObj.types[1]}</a></td>
-        </tr>
+        ${insertAbilitiesAndTypesRows(pokemonObj)}
       </table>
     </div>
   </div>`
 }
+  // helper function to insert rows in abilities/types table for each pokemon
+function insertAbilitiesAndTypesRows(pokemonObj) {
+  let tableRows = []
+  let ability
+  let type
+  let i = 0
+  while (pokemonObj.abilities[i] || pokemonObj.types[i]) {
+    ability = pokemonObj.abilities[i] || ''
+    type = pokemonObj.types[i] || ''
+    tableRows.push(`<tr>
+      <td><a href='https://bulbapedia.bulbagarden.net/wiki/${ability}_(Ability)'>${ability}</a></td>
+      <td><a href='https://bulbapedia.bulbagarden.net/wiki/${type}_(type)'>${type}</a></td>
+    </tr>`)
+    i++
+  }
+  return tableRows.join('')
+}
+
+// <tr>
+//   <td><a href='https://bulbapedia.bulbagarden.net/wiki/${pokemonObj.abilities[0]}_(Ability)'>${pokemonObj.abilities[0]}</a></td>
+//   <td><a href='https://bulbapedia.bulbagarden.net/wiki/${pokemonObj.types[0]}_(type)'>${pokemonObj.types[0]}</a></td>
+// </tr>
+// <tr>
+//   <td><a href='https://bulbapedia.bulbagarden.net/wiki/${pokemonObj.abilities[1]}_(Ability)'>${pokemonObj.abilities[1]}</a></td>
+//   <td><a href='https://bulbapedia.bulbagarden.net/wiki/${pokemonObj.types[1]}_(type)'>${pokemonObj.types[1]}</a></td>
+// </tr>
