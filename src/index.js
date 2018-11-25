@@ -70,7 +70,7 @@ function insertAbilitiesAndTypesRows(pokemonObj) {
   while (pokemonObj.abilities[i] || pokemonObj.types[i]) {
     ability = pokemonObj.abilities[i] || ''
     type = pokemonObj.types[i] || ''
-    abilityDispText = ability.replace('-', ' ') || ''
+    abilityDispText = ability.replace('-', ' ')
     // below if statement is for linking to bulbapedia ability page compliantly by replacing - with _ and capitalizing second word
     if (ability.includes('-')) {
       ability = ability.replace('-', '_')
