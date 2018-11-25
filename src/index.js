@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function addStylingToPokemonElements(pokemon) {
-      eachPokemonContainer.class = "pokemon-container";
+      eachPokemonContainer.classList.add("pokemon-container");
       firstStyleDiv.style = "width:230px;margin:10px;background:#fecd2f;color:#2d72fc";
       firstStyleDiv.classList.add("pokemon-frame");
       pokemonName.classList.add("center-text");
