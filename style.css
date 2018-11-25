@@ -4,6 +4,15 @@ body {
   font-weight: 300;
 }
 
+a:link, a:visited {
+  color:#2d72fc;
+  text-decoration: none
+}
+
+a:hover {
+  text-decoration: underline
+}
+
 #container {
   width: 1000px;
   margin: auto;
@@ -43,4 +52,33 @@ input:focus {
 
 .flip-image {
   color: #2d72fc;
+}
+
+.pokemon-frame {
+  width:240px;
+  height: 280px;
+  margin:10px;
+  background:#fecd2f;
+  color:#2d72fc;
+  border-radius: 15px
+}
+
+.image-container {
+  width: 239px;
+  margin: auto
+}
+
+.image-frame {
+  width: 96px;
+  margin: auto
+}
+
+.stats-table {
+  margin: auto
+}
+
+.stats-table td {
+  padding-left: 15px;
+  padding-right: 15px;
+  text-align: center
 }
