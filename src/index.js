@@ -1,12 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-  // Map each object in pokemon.js to HTML generator helper function
-  const pokemonCardHTMLArr = POKEMON.map(pokemonObj => returnPokeHTML(pokemonObj))
+  // Map each object in pokemon.js to HTML generator helper function, then join to create long HTML string
+  const pokemonCardsHTML = POKEMON.map(pokemonObj => returnPokeHTML(pokemonObj)).join('')
 
-  // Join the above array to create a long string of HTML for all pokemon cards
-  const pokemonCardsHTML = pokemonCardHTMLArr.join('')
-
-  // Set the inner HTML of pokemon-container to above long string, thereby rendering all pokemon on page load
+  // Set the inner HTML of pokemon-container to above long HTML string, thereby rendering all pokemon on page load
   document.getElementById('pokemon-container').innerHTML = pokemonCardsHTML
 
   //flip sprite when img is clicked, using data-action attribute to check for current state
@@ -29,11 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const filteredPokemonObjs = POKEMON.filter(pokemonObj => (
       pokemonObj.name.includes(event.target.value.toLowerCase())
     ))
-    // create html for filtered pokemon
+    // create html string for filtered pokemon
     const filteredPokemonObjsHTML = filteredPokemonObjs.map(pokemonObj => (
       returnPokeHTML(pokemonObj)
     )).join('')
-    // render filtered pokemon
+    // render filtered pokemon HTML string, or give error message if none
     document.getElementById('pokemon-container').innerHTML = filteredPokemonObjsHTML.length ? filteredPokemonObjsHTML : `<p class='center-text'>There are no Pokemon here</p>`
   })
 
@@ -65,17 +62,23 @@ function returnPokeHTML (pokemonObj) {
     </div>
   </div>`
 }
-  // helper function to insert rows in abilities/types table for each pokemon
+  // helper function to insert rows in abilities/types table in returnPokeHTML function
 function insertAbilitiesAndTypesRows(pokemonObj) {
   let tableRows = []
-  let ability
-  let type
+  let ability, type, index, abilityText
   let i = 0
   while (pokemonObj.abilities[i] || pokemonObj.types[i]) {
     ability = pokemonObj.abilities[i] || ''
     type = pokemonObj.types[i] || ''
+    abilityDispText = ability.replace('-', ' ') || ''
+    // below if statement is for linking to bulbapedia ability page compliantly by replacing - with _ and capitalizing second word
+    if (ability.includes('-')) {
+      ability = ability.replace('-', '_')
+      index = (ability.indexOf('_'))
+      ability = ability.substr(0, index + 1) + ability[index + 1].toUpperCase() + ability.substr(index + 2)
+    }
     tableRows.push(`<tr>
-      <td><a href='https://bulbapedia.bulbagarden.net/wiki/${ability}_(Ability)'>${ability}</a></td>
+      <td><a href='https://bulbapedia.bulbagarden.net/wiki/${ability}_(Ability)'>${abilityDispText}</a></td>
       <td><a href='https://bulbapedia.bulbagarden.net/wiki/${type}_(type)'>${type}</a></td>
     </tr>`)
     i++
@@ -83,6 +86,7 @@ function insertAbilitiesAndTypesRows(pokemonObj) {
   return tableRows.join('')
 }
 
+// below is hard-coded table rows...just in case
 // <tr>
 //   <td><a href='https://bulbapedia.bulbagarden.net/wiki/${pokemonObj.abilities[0]}_(Ability)'>${pokemonObj.abilities[0]}</a></td>
 //   <td><a href='https://bulbapedia.bulbagarden.net/wiki/${pokemonObj.types[0]}_(type)'>${pokemonObj.types[0]}</a></td>
