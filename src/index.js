@@ -2,16 +2,19 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log(POKEMON)
   //YOUR CODE HERE
 
-  const test = POKEMON[0];
-
-  let allPokemon = POKEMON;
+  // let allPokemon = POKEMON;
 
   let cardFront = true;
 
+  //The pokemonContainer will be the parent container for all of the individual Pokemon displays
   const pokemonContainer = document.querySelector('#pokemon-container');
 
   const noPokemon = pokemonContainer.querySelector('center');
   pokemonContainer.removeChild(noPokemon);
+
+  //Adding an event listener to form, this listener will call on the displayAllPokemon function which will dynamically change what is store in allPokemon to filter through user searches
+  const form = document.querySelector('form');
+  form.addEventListener('keyup', displayAllPokemon);
 
   function createElementsForEachPokemon(pokemon) {
     let eachPokemonContainer = document.createElement('div');
@@ -68,51 +71,22 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function displayAllPokemon() {
-    for (let pokemon of allPokemon) {
+    input = document.querySelector('#pokemon-search-input').value;
+    if (input !== "") {
+      allPokemon = POKEMON.filter(function(pokemon) {
+        return pokemon.name.split("").includes(input) });
+      console.log(input);
+    } else {
+      allPokemon = POKEMON;
+    }
+    for (pokemon of allPokemon) {
       displayOnePokemon(pokemon);
     }
   }
 
   function displayOnePokemon(pokemon) {
     createElementsForEachPokemon(pokemon);
-    // appendElementsForEachPokemon(pokemon);
-    // addStylingToPokemonElements(pokemon);
-    // displayPokemonCard(pokemon);
   }
 
-  displayAllPokemon();
-  // const form = document.querySelector('form');
-  // const imgContainer = document.querySelector('.img-container');
-  //
-  // form.addEventListener('keyup', displayPokemon);
-
-  //
-  // let cardFront = true;
-  //
-  // function catchPokemon() {
-  //   input = document.querySelector('#pokemon-search-input').value;
-  //   return POKEMON.filter(function(pokemon) { return pokemon.name === input });
-  // }
-  //
-  // function displayPokemon() {
-  //   displayPokemonName();
-  //   displayPokemonCard();
-  // }
-  //
-  // function displayPokemonName() {
-  //   let foundPokemon = catchPokemon();
-  //   pokemonName = document.createElement('h1');
-  //   pokemonContainer.appendChild(pokemonName);
-  //   pokemonName.innerText = `${foundPokemon[0]['name']}`;
-  // }
-  //
-  // function displayPokemonCard() {
-  //   foundPokemon = catchPokemon();
-  //   pokemonCard = document.createElement('img');
-  //   imgContainer.appendChild(pokemonCard);
-  //
-  //   }
-  // }
-  //
-
+  // displayAllPokemon();
 })
