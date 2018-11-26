@@ -44,3 +44,11 @@ input:focus {
 .flip-image {
   color: #2d72fc;
 }
+
+.pokemon-card {
+  text-align: center;
+  width: 230px;
+  margin: 10px;
+  background: #fecd2f;
+  color: #2d72fc;
+}
